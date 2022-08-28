@@ -1,0 +1,95 @@
+1. Creo la base de datos "instrumentosdb"
+
+2. Creo la carpeta "Practico5BackendReact" dentro de la carpeta "04 React"
+
+3. Abro la carpeta en VSCode
+
+4. Creo un proyecto de Node
+npm init -y
+
+5. Instalo las siguientes dependencias:
+npm i express //framework para trabajar con una api rest en node, (crea node_modules)
+npm i dotenv //provee variables de entorno (para no exponerlas)
+npm i sequelize mysql2 //orm sequelize y el driver de sql
+npm i sequelize-cli -g
+npm i body-pase //para manejar peticiones post
+
+
+
+6. Creo en la raíz del proyecto los siguientes archivos:
+.gitignore ( para ignorar los archivos de Git). //no queremos incluir el módulo de node por ejemplo 
+.env (Para declarar las variables de entorno) //no exponemos nombre de usuario y contraseña
+.sequelizerc //archivo de configuración de sequalize
+Crear la carpeta public
+
+7.Abrir el archivo .gitignore y en su interior agregar:
+/node_modules/
+
+8- Abrir el archivo .env y en su interior agregar:
+DB_USERNAME= root
+DB_PASSWORD= root
+DB_HOST= localhost
+DB_DATABASE=instrumentosdb
+DB_PORT=3306
+DB_DIALECT=mysql
+
+9 -Abrir el archivo .sequelizerc y en su interior agregar:
+//Ir a la página de sequalize y estudiar las configuraciones (lo próximo es de esa página)
+//Cómo resolver las rutas y archivos correspondientes
+//Son las carpetas que tiene que ir sí o sí para trabajar con Sequalize
+
+const path = require('path')
+module.exports = {
+config: path.resolve('./src/database/config', 'config.js'),
+'models-path': path.resolve('./src/database/models'),
+'seeders-path': path.resolve('./src/database/seeders'),
+'migrations-path': path.resolve('./src/database/migrations'),
+}
+
+
+10 - Crear la carpeta src
+Dentro de src crear:
+Archivo : app.js
+Carpetas: database , views, routes, controller
+
+11 - Cambiar al interior de la carpeta database
+cd database
+En su interior ejecutar: sequelize-cli init //Se inicializa Sequalize
+Se crean unas carpeta en su interior
+
+12 - Navegar a la carpeta config y en su interior está el archivo config.json
+Renombrar dicho archivo por config.js ( ESTO OBLIGA A CAMBIAR EL CONTENIDO DE OTRO ARCHIVO)
+
+13 - Eliminar su interior y reeplazarlo por este contenido (CONFIG.JS):
+
+require('dotenv').config()
+module.exports = {
+  
+  "development": {
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  dialect: process.env.DB_DIALECT
+  }
+
+}
+
+14- Ubicar la carpeta Models, en su interior está el archivo index.js. 
+REEMPLAZAR LA LINEA QUE INVOCA AL VIEJO ARCHIVO CONFIG.JSON, por CONFIG.JS
+
+
+15 _ PLanificar cuidadosamente el modelo en un NOTEPAD
+//Creo la tabla instrumento
+sequelize model:generate --name instrumento --attributes instrumento:string,marca:string,modelo:string,imagen:string,precio:string,costoEnvio:string,cantidadVendida:string,descripcion:string
+
+16. Voy a la raíz del proyecto y ejecuto esa instrucción de arriba
+
+17. Migro lo que hice
+sequelize db:migrate
+
+18. Si quiero volver atrás:
+sequelize db:migrate:undo:all
+
+
